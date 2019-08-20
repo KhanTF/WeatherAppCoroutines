@@ -1,12 +1,15 @@
 package com.rage.weatherapp.presentation.ui.citylist
 
-import android.util.SparseArray
+import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
+import com.arellomobile.mvp.viewstate.strategy.OneExecutionStateStrategy
+import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import com.rage.weatherapp.presentation.base.BaseView
 import com.rage.weatherapp.presentation.model.CityModel
-import java.util.*
 
-interface CityListView : BaseView{
-    fun showProgress(isVisible: Boolean)
+interface CityListView : BaseView {
+    @StateStrategyType(OneExecutionStateStrategy::class)
     fun showErrorMessage(message: String)
-    fun showCityList(cityPages: Map<Int,List<CityModel>>, pageSize: Int)
+
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setCityDataSource(source: suspend (offset: Int, limit: Int) -> List<CityModel>)
 }

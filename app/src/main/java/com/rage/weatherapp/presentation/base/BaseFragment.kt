@@ -14,6 +14,7 @@ import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import javax.inject.Inject
 
 abstract class BaseFragment : MvpAppCompatFragment(),BaseView, HasSupportFragmentInjector, CoroutineScope by MainScope(){
@@ -32,6 +33,11 @@ abstract class BaseFragment : MvpAppCompatFragment(),BaseView, HasSupportFragmen
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(layoutId,container,false)
+    }
+
+    override fun onDestroyView() {
+        cancel()
+        super.onDestroyView()
     }
 
 }

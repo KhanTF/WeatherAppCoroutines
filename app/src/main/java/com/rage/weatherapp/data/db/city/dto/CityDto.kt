@@ -1,6 +1,7 @@
 package com.rage.weatherapp.data.db.city.dto
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "city")

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="list_item_space">8dp</dimen>
+    <dimen name="list_item_vertical">8dp</dimen>
+    <dimen name="list_item_horizontal">8dp</dimen>
+</resources>

@@ -7,12 +7,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.rage.weatherapp"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -57,8 +57,11 @@ dependencies {
 
     //Room 
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-coroutines:$room_coroutines_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    // Paging
+    implementation "android.arch.paging:runtime:$paging_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
