@@ -14,9 +14,9 @@ class MarginItemDecoration(
     @DimenRes private val space: Int = 0
 ) : RecyclerView.ItemDecoration() {
 
-    private val verticalSize = if (vertical == 0) context.resources.getDimensionPixelSize(vertical) else 0
-    private val horizontalSize = if (horizontal == 0) context.resources.getDimensionPixelSize(horizontal) else 0
-    private val spaceSize = if (space == 0) context.resources.getDimensionPixelSize(space) else 0
+    private val verticalSize = if (vertical != 0) context.resources.getDimensionPixelSize(vertical) else 0
+    private val horizontalSize = if (horizontal != 0) context.resources.getDimensionPixelSize(horizontal) else 0
+    private val spaceSize = if (space != 0) context.resources.getDimensionPixelSize(space) else 0
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val viewHolder = parent.getChildViewHolder(view)
@@ -24,11 +24,15 @@ class MarginItemDecoration(
         val count = parent.adapter?.itemCount ?: 0
         outRect.left = horizontalSize
         outRect.right = horizontalSize
-        outRect.top = verticalSize
+        if(position == 0){
+            outRect.top = verticalSize
+        }else{
+            outRect.top = spaceSize/2
+        }
         if (position == count - 1) {
             outRect.bottom = verticalSize
         } else {
-            outRect.bottom = spaceSize
+            outRect.bottom = spaceSize/2
         }
     }
 

@@ -8,4 +8,7 @@ class GetCityListUseCase @Inject constructor(private val cityRepository: CityRep
     suspend fun getCityList(offset: Int, count: Int): List<CityEntity>{
         return cityRepository.getCityList(offset,count)
     }
+    suspend fun getCityList(prefix: String,offset: Int, count: Int): List<CityEntity>{
+        return cityRepository.getCityList(prefix, offset, count)
+    }
 }

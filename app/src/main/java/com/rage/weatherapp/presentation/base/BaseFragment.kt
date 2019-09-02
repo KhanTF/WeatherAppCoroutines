@@ -26,7 +26,7 @@ abstract class BaseFragment : MvpAppCompatFragment(),BaseView, HasSupportFragmen
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = supportFragmentInjector
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
     }

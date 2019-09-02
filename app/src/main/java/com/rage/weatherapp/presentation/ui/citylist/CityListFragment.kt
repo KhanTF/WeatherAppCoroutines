@@ -1,6 +1,10 @@
 package com.rage.weatherapp.presentation.ui.citylist
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -28,10 +32,37 @@ class CityListFragment : BaseFragment(), CityListView {
     fun providePresenter(): CityListPresenter = presenterProvider.get()
 
     private val adapter = CityListAdapter()
+    private val onSearchQueryTextListener = object : SearchView.OnQueryTextListener{
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            presenter.onSearchCity(newText.orEmpty())
+            return true
+        }
+    }
 
     companion object {
         private const val PAGE_SIZE = 100
         fun getInstance() = CityListFragment()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_city_list,menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        val searchItem = menu.findItem(R.id.search)
+        val searchView = searchItem.actionView as SearchView?
+        searchView?.setOnQueryTextListener(onSearchQueryTextListener)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

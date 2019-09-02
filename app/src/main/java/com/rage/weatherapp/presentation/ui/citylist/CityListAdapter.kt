@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.item_city.view.*
 
 class CityListAdapter : PagedListAdapter<CityModel, CityListAdapter.CityViewHolder>(CityListDiffUtil()) {
 
+    var listener : ((CityModel)->Unit)?=null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityViewHolder {
         return CityViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_city, parent, false))
     }
@@ -35,6 +37,9 @@ class CityListAdapter : PagedListAdapter<CityModel, CityListAdapter.CityViewHold
             if (model != null) {
                 title.text = model.id.toString()
                 name.text = model.name
+                setOnClickListener {
+                    listener?.invoke(model)
+                }
             }
         }
     }
