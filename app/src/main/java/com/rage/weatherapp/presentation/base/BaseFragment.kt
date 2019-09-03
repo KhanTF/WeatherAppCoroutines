@@ -5,39 +5,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.arellomobile.mvp.MvpAppCompatFragment
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import javax.inject.Inject
 
-abstract class BaseFragment : MvpAppCompatFragment(),BaseView, HasSupportFragmentInjector, CoroutineScope by MainScope(){
-
-    @Inject
-    lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
+abstract class BaseFragment : MvpAppCompatFragment(), BaseView, CoroutineScope by MainScope() {
 
     abstract val layoutId: Int
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = supportFragmentInjector
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        AndroidSupportInjection.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layoutId,container,false)
+        return inflater.inflate(layoutId, container, false)
     }
 
     override fun onDestroyView() {
         cancel()
         super.onDestroyView()
+    }
+
+    override fun showErrorMessage(message: String?) {
+        if (message != null)
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
 }

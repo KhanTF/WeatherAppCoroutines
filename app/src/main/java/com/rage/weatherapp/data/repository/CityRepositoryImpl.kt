@@ -6,11 +6,8 @@ import com.rage.weatherapp.data.util.SqlUtil
 import com.rage.weatherapp.domain.entity.CityEntity
 import com.rage.weatherapp.domain.exceptions.CityNotFoundException
 import com.rage.weatherapp.domain.repository.CityRepository
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class CityRepositoryImpl @Inject constructor(private val cityDao: CityDao) : CityRepository {
+class CityRepositoryImpl  constructor(private val cityDao: CityDao) : CityRepository {
 
     override suspend fun getCityList(offset: Int, count: Int): List<CityEntity> {
         return cityDao.getCity(offset, count).map(CityEntityMapper::map)

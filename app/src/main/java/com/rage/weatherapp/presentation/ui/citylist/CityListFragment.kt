@@ -3,7 +3,6 @@ package com.rage.weatherapp.presentation.ui.citylist
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,36 +15,36 @@ import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.util.executor.CoroutineExecutor
 import kotlinx.android.synthetic.main.fragment_city_list.*
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
-import javax.inject.Provider
+import org.koin.android.ext.android.inject
+import org.koin.androidx.scope.currentScope
 
 
 class CityListFragment : BaseFragment(), CityListView {
+
+    companion object {
+        private const val PAGE_SIZE = 100
+        fun getInstance() = CityListFragment()
+    }
+
     override val layoutId: Int
         get() = R.layout.fragment_city_list
-    @Inject
-    lateinit var presenterProvider: Provider<CityListPresenter>
+    private val presenterProvider: CityListPresenter by currentScope.inject()
     @InjectPresenter
     lateinit var presenter: CityListPresenter
-
     @ProvidePresenter
-    fun providePresenter(): CityListPresenter = presenterProvider.get()
+    fun providePresenter(): CityListPresenter = presenterProvider
 
     private val adapter = CityListAdapter()
-    private val onSearchQueryTextListener = object : SearchView.OnQueryTextListener{
+
+    private val onSearchQueryTextListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            return false
         }
 
         override fun onQueryTextChange(newText: String?): Boolean {
             presenter.onSearchCity(newText.orEmpty())
             return true
         }
-    }
-
-    companion object {
-        private const val PAGE_SIZE = 100
-        fun getInstance() = CityListFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +54,7 @@ class CityListFragment : BaseFragment(), CityListView {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_city_list,menu)
+        inflater.inflate(R.menu.menu_city_list, menu)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -68,6 +67,7 @@ class CityListFragment : BaseFragment(), CityListView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         city_list.adapter = adapter
+        adapter.listener = presenter::onCitySelected
         city_list.layoutManager = LinearLayoutManager(context)
         city_list.addItemDecoration(
             MarginItemDecoration(
@@ -79,9 +79,6 @@ class CityListFragment : BaseFragment(), CityListView {
         )
     }
 
-    override fun showErrorMessage(message: String) {
-    }
-
     override fun setCityDataSource(source: suspend (offset: Int, limit: Int) -> List<CityModel>) {
         val dataSource = CityListDataSource(this, source)
         val pagedListConfig = PagedList.Config.Builder()
@@ -90,7 +87,7 @@ class CityListFragment : BaseFragment(), CityListView {
             .build()
         val pagedList: PagedList<CityModel> = PagedList.Builder(dataSource, pagedListConfig)
             .setFetchExecutor(CoroutineExecutor(dispatcher = Dispatchers.IO))
-            .setNotifyExecutor(CoroutineExecutor(dispatcher =  Dispatchers.Main))
+            .setNotifyExecutor(CoroutineExecutor(dispatcher = Dispatchers.Main))
             .build()
         adapter.submitList(pagedList)
     }

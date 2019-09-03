@@ -2,7 +2,6 @@ package com.rage.weatherapp.presentation.common.itemdecorator
 
 import android.content.Context
 import android.graphics.Rect
-import android.util.SparseArray
 import android.view.View
 import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.RecyclerView
