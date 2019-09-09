@@ -20,7 +20,7 @@ class CityListPresenter constructor(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        viewState.setCityDataSource { offset, limit -> getCityListUseCase.getCityList(offset, limit).map(CityModelMapper::map) }
+        viewState.setCityDataSource(searchText) { offset, limit -> getCityListUseCase.getCityList(offset, limit).map(CityModelMapper::map) }
     }
 
     fun onCitySelected(cityModel: CityModel){
@@ -32,9 +32,9 @@ class CityListPresenter constructor(
             searchText = text
             searchDebounce.debounce(200) {
                 if(text.isBlank()){
-                    viewState.setCityDataSource { offset, limit -> getCityListUseCase.getCityList(offset, limit).map(CityModelMapper::map) }
+                    viewState.setCityDataSource(searchText) { offset, limit -> getCityListUseCase.getCityList(offset, limit).map(CityModelMapper::map) }
                 }else {
-                    viewState.setCityDataSource { offset, limit -> getCityListUseCase.getCityList(text, offset, limit).map(CityModelMapper::map) }
+                    viewState.setCityDataSource(searchText) { offset, limit -> getCityListUseCase.getCityList(text, offset, limit).map(CityModelMapper::map) }
                 }
             }
         }

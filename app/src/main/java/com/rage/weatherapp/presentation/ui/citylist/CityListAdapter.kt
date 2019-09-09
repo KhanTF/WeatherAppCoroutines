@@ -3,6 +3,7 @@ package com.rage.weatherapp.presentation.ui.citylist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,14 @@ class CityListAdapter : PagedListAdapter<CityModel, CityListAdapter.CityViewHold
 
     var listener : ((CityModel)->Unit)?=null
 
+    private var id: String? = null
+
+    fun submitList(id: String,pagedList: PagedList<CityModel>?) {
+        if(this.id != id){
+            submitList(pagedList)
+            this.id = id
+        }
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityViewHolder {
         return CityViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_city, parent, false))
     }
