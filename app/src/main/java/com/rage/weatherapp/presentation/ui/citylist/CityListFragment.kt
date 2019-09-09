@@ -11,12 +11,15 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.rage.weatherapp.R
 import com.rage.weatherapp.presentation.base.BaseFragment
+import com.rage.weatherapp.presentation.base.getByScope
+import com.rage.weatherapp.presentation.base.injectByScope
 import com.rage.weatherapp.presentation.common.itemdecorator.MarginItemDecoration
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.presentation.ui.MainPresenter
 import com.rage.weatherapp.util.executor.CoroutineExecutor
 import kotlinx.android.synthetic.main.fragment_city_list.*
 import kotlinx.coroutines.Dispatchers
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.currentScope
 
@@ -24,11 +27,10 @@ import org.koin.androidx.scope.currentScope
 class CityListFragment : BaseFragment(), CityListView {
     override val layoutId: Int
         get() = R.layout.fragment_city_list
-    private val presenterProvider: CityListPresenter by currentScope.inject()
     @InjectPresenter
     lateinit var presenter: CityListPresenter
     @ProvidePresenter
-    fun providePresenter(): CityListPresenter = presenterProvider
+    fun providePresenter(): CityListPresenter = getByScope()
 
     private val adapter = CityListAdapter()
     private val onSearchQueryTextListener = object : SearchView.OnQueryTextListener{
@@ -78,7 +80,7 @@ class CityListFragment : BaseFragment(), CityListView {
     }
 
     override fun setCityDataSource(source: suspend (offset: Int, limit: Int) -> List<CityModel>) {
-        val dataSource = CityListDataSource(this, source)
+        val dataSource = createCityListDataSource(source)
         val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setPageSize(PAGE_SIZE)

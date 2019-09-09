@@ -7,6 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+fun CoroutineScope.createCityListDataSource(storage: suspend (offset: Int, limit: Int) -> List<CityModel>) :CityListDataSource{
+    return CityListDataSource(this,storage)
+}
+
 class CityListDataSource(private val scope: CoroutineScope,
                          private val storage: suspend (offset: Int, limit: Int) -> List<CityModel>) : PositionalDataSource<CityModel>(), CoroutineScope by scope {
 

@@ -5,9 +5,12 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.rage.weatherapp.R
 import com.rage.weatherapp.presentation.base.BaseFragment
+import com.rage.weatherapp.presentation.base.getByScope
+import com.rage.weatherapp.presentation.base.injectByScope
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.presentation.model.WeatherModel
 import com.rage.weatherapp.presentation.ui.MainPresenter
+import org.koin.android.ext.android.get
 import org.koin.androidx.scope.currentScope
 import org.koin.core.parameter.parametersOf
 
@@ -30,15 +33,10 @@ class CityWeatherFragment : BaseFragment(),CityWeatherView{
         }
     }
 
-    private val presenterProvider: CityWeatherPresenter by currentScope.inject{
-        parametersOf(getCityModelArgument(this))
-    }
     @InjectPresenter
     lateinit var presenter: CityWeatherPresenter
     @ProvidePresenter
-    fun providePresenter() : CityWeatherPresenter{
-        return presenterProvider
-    }
+    fun providePresenter() : CityWeatherPresenter = getByScope { parametersOf(getCityModelArgument(this)) }
 
     override val layoutId: Int = R.layout.fragment_city_weather
 
