@@ -7,22 +7,15 @@ import com.rage.weatherapp.domain.repository.WeatherRepository
 import com.rage.weatherapp.domain.usecase.GetCityListUseCase
 import com.rage.weatherapp.domain.usecase.GetCityWeatherUseCase
 import org.koin.core.module.Module
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
-object DomainModule : ModuleRather {
+fun prepareUseCaseModule() = module {
+    factory { GetCityWeatherUseCase(get()) }
+    factory { GetCityListUseCase(get()) }
+}
 
-    private val usecaseModule = module {
-        factory { GetCityWeatherUseCase(get()) }
-        factory { GetCityListUseCase(get()) }
-    }
-
-    private val repositoryModule = module {
-        single { CityRepositoryImpl(get()) as CityRepository }
-        single { WeatherRepositoryImpl(get()) as WeatherRepository }
-    }
-
-    override fun getModules(): List<Module> {
-        return listOf(usecaseModule, repositoryModule)
-    }
-
+fun prepareRepositoryModule() = module {
+    single { CityRepositoryImpl(get()) } bind CityRepository::class
+    single { WeatherRepositoryImpl(get()) } bind WeatherRepository::class
 }

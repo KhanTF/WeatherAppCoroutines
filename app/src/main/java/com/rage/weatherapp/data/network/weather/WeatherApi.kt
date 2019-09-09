@@ -14,16 +14,19 @@ import java.util.*
 interface WeatherApi {
     companion object {
         private const val QUERY_API_KEY = "APPID"
+
         fun getInstance(client: OkHttpClient): WeatherApi {
             val gson = GsonBuilder()
                 .registerTypeAdapter(Date::class.java, DateConverter)
                 .create()
-            return Retrofit.Builder()
-                .baseUrl(BuildConfig.OPEN_WEATHER_API_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build()
-                .create(WeatherApi::class.java)
+            return WeatherApiErrorHandler(
+                Retrofit.Builder()
+                    .baseUrl(BuildConfig.OPEN_WEATHER_API_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build()
+                    .create(WeatherApi::class.java)
+            )
         }
     }
 

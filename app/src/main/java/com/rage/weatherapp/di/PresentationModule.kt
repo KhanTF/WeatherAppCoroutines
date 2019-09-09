@@ -20,31 +20,22 @@ import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import java.util.*
 
-object PresentationModule : ModuleRather {
-
-    private val navigationModule = module {
-        single { Cicerone.create() }
-        factory { get<Cicerone<Router>>().navigatorHolder }
-        factory { get<Cicerone<Router>>().router }
+fun prepareNavigationModule() = module {
+    single { Cicerone.create() }
+    factory { get<Cicerone<Router>>().navigatorHolder }
+    factory { get<Cicerone<Router>>().router }
+}
+fun prepareUiModule() = module {
+    scope(named<MainActivity>()) {
+        scoped { MainPresenter(get()) }
+        scoped { (mainActivity: MainActivity) -> SupportAppNavigator(mainActivity, R.id.main_container)} bind Navigator::class
     }
-
-    private val uiModule = module {
-        scope(named<MainActivity>()) {
-            scoped { MainPresenter(get()) }
-            scoped { (mainActivity: MainActivity) -> SupportAppNavigator(mainActivity, R.id.main_container)} bind Navigator::class
-        }
-        scope(named<CityListFragment>()) {
-            scoped { CityListPresenter(get(), get()) }
-        }
-        scope(named<CityWeatherFragment>()) {
-            scoped { (cityModel: CityModel) ->
-                CityWeatherPresenter(cityModel, get())
-            }
+    scope(named<CityListFragment>()) {
+        scoped { CityListPresenter(get(), get()) }
+    }
+    scope(named<CityWeatherFragment>()) {
+        scoped { (cityModel: CityModel) ->
+            CityWeatherPresenter(cityModel, get())
         }
     }
-
-    override fun getModules(): List<Module> {
-        return listOf(navigationModule, uiModule)
-    }
-
 }

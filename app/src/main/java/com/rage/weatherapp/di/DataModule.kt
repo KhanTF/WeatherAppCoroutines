@@ -8,45 +8,34 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import org.koin.experimental.builder.singleBy
 import timber.log.Timber
 
-object DataModule : ModuleRather {
+const val TAG_NETWORK = "network_traffic"
 
-    private const val TAG_NETWORK = "TAG_NETWORK"
-
-    private val databaseModule = module {
-        single {
-            Room
-                .databaseBuilder(get(), CityDatabase::class.java, "city.db")
-                .createFromAsset("city.db")
-                .build()
-        }
-        factory {
-            get<CityDatabase>().getCityDao()
-        }
+fun prepareDataBaseModule(): Module = module {
+    single {
+        Room
+            .databaseBuilder(get(), CityDatabase::class.java, "city.db")
+            .createFromAsset("city.db")
+            .build()
     }
+    factory { get<CityDatabase>().getCityDao() }
+}
 
-    private val networkModule = module {
-        single {
-            OkHttpClient.Builder()
-                .addNetworkInterceptor(HttpLoggingInterceptor(object :
-                    HttpLoggingInterceptor.Logger {
-                    override fun log(message: String) {
-                        Timber.tag(TAG_NETWORK).i(message)
-                    }
-                }).apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                })
-                .build()
+fun prepareNetworkModule(): Module = module {
+    single {
+        val logger = object : HttpLoggingInterceptor.Logger {
+            override fun log(message: String) {
+                Timber.tag(TAG_NETWORK).i(message)
+            }
         }
-        single {
-            WeatherApiErrorHandler(WeatherApi.getInstance(get())) as WeatherApi
-        }
+        OkHttpClient.Builder()
+            .addNetworkInterceptor(HttpLoggingInterceptor(logger).apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+            .build()
     }
-
-    override fun getModules(): List<Module> {
-        return listOf(databaseModule, networkModule)
+    single {
+        WeatherApi.getInstance(get())
     }
-
 }

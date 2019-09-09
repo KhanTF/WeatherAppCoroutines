@@ -1,17 +1,10 @@
 package com.rage.weatherapp
 
 import android.app.Application
-import android.content.Context
-import com.rage.weatherapp.di.AppModule
-import com.rage.weatherapp.di.DataModule
-import com.rage.weatherapp.di.DomainModule
-import com.rage.weatherapp.di.PresentationModule
+import com.rage.weatherapp.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
-import org.koin.core.definition.DefinitionFactory
-import org.koin.dsl.module
 import timber.log.Timber
 
 class WeatherApplication : Application() {
@@ -23,7 +16,14 @@ class WeatherApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@WeatherApplication)
-            modules(DataModule.getModules() + DomainModule.getModules() + PresentationModule.getModules())
+            modules(
+                prepareDataBaseModule() +
+                        prepareNetworkModule() +
+                        prepareUseCaseModule() +
+                        prepareRepositoryModule() +
+                        prepareNavigationModule() +
+                        prepareUiModule()
+            )
         }
     }
 

@@ -6,16 +6,11 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.rage.weatherapp.R
 import com.rage.weatherapp.presentation.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.currentScope
-import org.koin.core.KoinComponent
 import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.named
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
-import timber.log.Timber
-import java.util.*
 
 class MainActivity : BaseActivity(), MainView {
     override val layoutId: Int
