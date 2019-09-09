@@ -24,9 +24,9 @@ abstract class BaseFragment : MvpAppCompatFragment(), BaseView, CoroutineScope b
         return inflater.inflate(layoutId, container, false)
     }
 
-    override fun onDestroyView() {
+    override fun onDestroy() {
         cancel()
-        super.onDestroyView()
+        super.onDestroy()
     }
 
     override fun showErrorMessage(message: String?) {

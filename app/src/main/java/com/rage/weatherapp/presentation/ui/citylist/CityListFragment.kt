@@ -3,6 +3,7 @@ package com.rage.weatherapp.presentation.ui.citylist
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +22,6 @@ import org.koin.androidx.scope.currentScope
 
 
 class CityListFragment : BaseFragment(), CityListView {
-
-    companion object {
-        private const val PAGE_SIZE = 100
-        fun getInstance() = CityListFragment()
-    }
-
     override val layoutId: Int
         get() = R.layout.fragment_city_list
     private val presenterProvider: CityListPresenter by currentScope.inject()
@@ -36,16 +31,18 @@ class CityListFragment : BaseFragment(), CityListView {
     fun providePresenter(): CityListPresenter = presenterProvider
 
     private val adapter = CityListAdapter()
-
-    private val onSearchQueryTextListener = object : SearchView.OnQueryTextListener {
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            return false
-        }
+    private val onSearchQueryTextListener = object : SearchView.OnQueryTextListener{
+        override fun onQueryTextSubmit(query: String?): Boolean {return false}
 
         override fun onQueryTextChange(newText: String?): Boolean {
             presenter.onSearchCity(newText.orEmpty())
             return true
         }
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 100
+        fun getInstance() = CityListFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +52,7 @@ class CityListFragment : BaseFragment(), CityListView {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_city_list, menu)
+        inflater.inflate(R.menu.menu_city_list,menu)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -88,7 +85,7 @@ class CityListFragment : BaseFragment(), CityListView {
             .build()
         val pagedList: PagedList<CityModel> = PagedList.Builder(dataSource, pagedListConfig)
             .setFetchExecutor(CoroutineExecutor(dispatcher = Dispatchers.IO))
-            .setNotifyExecutor(CoroutineExecutor(dispatcher = Dispatchers.Main))
+            .setNotifyExecutor(CoroutineExecutor(dispatcher =  Dispatchers.Main))
             .build()
         adapter.submitList(pagedList)
     }
