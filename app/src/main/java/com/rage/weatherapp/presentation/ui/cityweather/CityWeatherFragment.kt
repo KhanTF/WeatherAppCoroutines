@@ -7,6 +7,7 @@ import com.rage.weatherapp.R
 import com.rage.weatherapp.presentation.base.BaseFragment
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.presentation.model.WeatherModel
+import com.rage.weatherapp.presentation.ui.MainPresenter
 import org.koin.androidx.scope.currentScope
 import org.koin.core.parameter.parametersOf
 

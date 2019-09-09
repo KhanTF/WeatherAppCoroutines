@@ -10,10 +10,15 @@ import com.rage.weatherapp.presentation.ui.cityweather.CityWeatherFragment
 import com.rage.weatherapp.presentation.ui.cityweather.CityWeatherPresenter
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.koin.experimental.builder.factoryBy
+import org.koin.experimental.builder.scopedBy
 import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import java.util.*
 
 object PresentationModule : ModuleRather {
 
@@ -25,23 +30,15 @@ object PresentationModule : ModuleRather {
 
     private val uiModule = module {
         scope(named<MainActivity>()) {
-            scoped {
-                factory { MainPresenter(get()) }
-                factory { (mainActivity: MainActivity) ->
-                    SupportAppNavigator(mainActivity, R.id.main_container)
-                }
-                scope(named<CityListFragment>()) {
-                    scoped {
-                        factory { CityListPresenter(get(), get()) }
-                    }
-                }
-                scope(named<CityWeatherFragment>()) {
-                    scoped {
-                        factory { (cityModel: CityModel) ->
-                            CityWeatherPresenter(cityModel, get())
-                        }
-                    }
-                }
+            scoped { MainPresenter(get()) }
+            scoped { (mainActivity: MainActivity) -> SupportAppNavigator(mainActivity, R.id.main_container)} bind Navigator::class
+        }
+        scope(named<CityListFragment>()) {
+            scoped { CityListPresenter(get(), get()) }
+        }
+        scope(named<CityWeatherFragment>()) {
+            scoped { (cityModel: CityModel) ->
+                CityWeatherPresenter(cityModel, get())
             }
         }
     }

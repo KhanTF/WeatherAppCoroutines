@@ -12,6 +12,7 @@ import com.rage.weatherapp.R
 import com.rage.weatherapp.presentation.base.BaseFragment
 import com.rage.weatherapp.presentation.common.itemdecorator.MarginItemDecoration
 import com.rage.weatherapp.presentation.model.CityModel
+import com.rage.weatherapp.presentation.ui.MainPresenter
 import com.rage.weatherapp.util.executor.CoroutineExecutor
 import kotlinx.android.synthetic.main.fragment_city_list.*
 import kotlinx.coroutines.Dispatchers

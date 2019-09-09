@@ -10,16 +10,19 @@ import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.android.inject
 import org.koin.androidx.scope.currentScope
 import org.koin.core.KoinComponent
+import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
+import timber.log.Timber
+import java.util.*
 
 class MainActivity : BaseActivity(), MainView {
     override val layoutId: Int
         get() = R.layout.activity_main
 
     private val presenterProvider: MainPresenter by currentScope.inject()
-    private val navigator: Navigator by currentScope.inject()
+    private val navigator: Navigator by currentScope.inject{ parametersOf(this)}
     private val navigatorHolder: NavigatorHolder by inject()
     @InjectPresenter
     lateinit var presenter: MainPresenter
