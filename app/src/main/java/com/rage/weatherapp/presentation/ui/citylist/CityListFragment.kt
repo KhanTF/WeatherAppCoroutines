@@ -8,12 +8,17 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.ChangeBounds
+import androidx.transition.ChangeTransform
+import androidx.transition.TransitionInflater
+import androidx.transition.TransitionSet
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.rage.weatherapp.R
 import com.rage.weatherapp.presentation.base.BaseFragment
 import com.rage.weatherapp.presentation.base.getByScope
 import com.rage.weatherapp.presentation.common.itemdecorator.MarginItemDecoration
+import com.rage.weatherapp.presentation.common.navigation.SharedSupportAppNavigator
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.util.executor.CoroutineExecutor
 import kotlinx.android.synthetic.main.fragment_city_list.*
@@ -73,28 +78,34 @@ class CityListFragment : BaseFragment(), CityListView {
         super.onViewCreated(view, savedInstanceState)
         val layoutManager = LinearLayoutManager(context)
         city_list.adapter = adapter
-        adapter.listener = presenter::onCitySelected
+        adapter.listener = { nameView, model ->
+            presenter.onCitySelected(SharedSupportAppNavigator.SharedParams(
+                    Triple(nameView, R.id.name, model.id.toString()),
+                    TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move),
+                    TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+            ), model)
+        }
         city_list.layoutManager = layoutManager
         city_list.addItemDecoration(
-            MarginItemDecoration(
-                requireContext(),
-                R.dimen.list_item_vertical,
-                R.dimen.list_item_horizontal,
-                R.dimen.list_item_space
-            )
+                MarginItemDecoration(
+                        requireContext(),
+                        R.dimen.list_item_vertical,
+                        R.dimen.list_item_horizontal,
+                        R.dimen.list_item_space
+                )
         )
     }
 
     override fun setCityDataSource(id: String, source: suspend (offset: Int, limit: Int) -> List<CityModel>) {
         val dataSource = createCityListDataSource(source)
         val pagedListConfig = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setPageSize(PAGE_SIZE)
-            .build()
+                .setEnablePlaceholders(false)
+                .setPageSize(PAGE_SIZE)
+                .build()
         val pagedList: PagedList<CityModel> = PagedList.Builder(dataSource, pagedListConfig)
-            .setFetchExecutor(CoroutineExecutor(dispatcher = Dispatchers.IO))
-            .setNotifyExecutor(CoroutineExecutor(dispatcher = Dispatchers.Main))
-            .build()
+                .setFetchExecutor(CoroutineExecutor(dispatcher = Dispatchers.IO))
+                .setNotifyExecutor(CoroutineExecutor(dispatcher = Dispatchers.Main))
+                .build()
         adapter.submitList(id, pagedList)
     }
 

@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_city.view.*
 
 class CityListAdapter : PagedListAdapter<CityModel, CityListAdapter.CityViewHolder>(CityListDiffUtil()) {
 
-    var listener : ((CityModel)->Unit)?=null
+    var listener : ((View,CityModel)->Unit)?=null
 
     private var id: String? = null
 
@@ -47,7 +47,7 @@ class CityListAdapter : PagedListAdapter<CityModel, CityListAdapter.CityViewHold
                 title.text = model.id.toString()
                 name.text = model.name
                 setOnClickListener {
-                    listener?.invoke(model)
+                    listener?.invoke(name,model)
                 }
             }
         }

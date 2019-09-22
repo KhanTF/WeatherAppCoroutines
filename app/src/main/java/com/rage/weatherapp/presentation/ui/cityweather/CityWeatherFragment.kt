@@ -1,6 +1,7 @@
 package com.rage.weatherapp.presentation.ui.cityweather
 
 import android.os.Bundle
+import android.view.View
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.rage.weatherapp.R
@@ -10,6 +11,7 @@ import com.rage.weatherapp.presentation.base.injectByScope
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.presentation.model.WeatherModel
 import com.rage.weatherapp.presentation.ui.MainPresenter
+import kotlinx.android.synthetic.main.fragment_city_weather.*
 import org.koin.android.ext.android.get
 import org.koin.androidx.scope.currentScope
 import org.koin.core.parameter.parametersOf
@@ -41,7 +43,7 @@ class CityWeatherFragment : BaseFragment(),CityWeatherView{
     override val layoutId: Int = R.layout.fragment_city_weather
 
     override fun showWeather(weatherModel: WeatherModel) {
-
+        name.text = weatherModel.cityName
     }
 
     override fun setProgressVisibility(visibility: Boolean) {

@@ -1,6 +1,7 @@
 package com.rage.weatherapp.di
 
 import com.rage.weatherapp.R
+import com.rage.weatherapp.presentation.common.navigation.SharedSupportAppNavigator
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.presentation.ui.MainActivity
 import com.rage.weatherapp.presentation.ui.MainPresenter
@@ -28,7 +29,7 @@ fun prepareNavigationModule() = module {
 fun prepareUiModule() = module {
     scope(named<MainActivity>()) {
         scoped { MainPresenter(get()) }
-        scoped { (mainActivity: MainActivity) -> SupportAppNavigator(mainActivity, R.id.main_container)} bind Navigator::class
+        scoped { (mainActivity: MainActivity) -> SharedSupportAppNavigator(mainActivity, R.id.main_container)} bind Navigator::class
     }
     scope(named<CityListFragment>()) {
         scoped { CityListPresenter(get(), get()) }

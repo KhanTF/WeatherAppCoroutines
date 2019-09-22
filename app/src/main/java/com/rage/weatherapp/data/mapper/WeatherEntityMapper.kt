@@ -6,6 +6,7 @@ import com.rage.weatherapp.domain.entity.WeatherEntity
 object WeatherEntityMapper{
 
     fun map(weatherInformationItem: WeatherInformationItem): WeatherEntity{
+        val cityName = requireNotNull(weatherInformationItem.cityName)
         val lat = requireNotNull(weatherInformationItem.coordinate?.lat)
         val lon  = requireNotNull(weatherInformationItem.coordinate?.lon)
         val date = requireNotNull(weatherInformationItem.date)
@@ -16,7 +17,7 @@ object WeatherEntityMapper{
         val humidity = requireNotNull(weatherInformationItem.main?.humidity)
         val windSpeed = requireNotNull(weatherInformationItem.wind?.speed)
         val windDeg = requireNotNull(weatherInformationItem.wind?.deg)
-        return WeatherEntity(date,temp,tempMin,tempMax,pressure,humidity,windSpeed,windDeg,lat,lon)
+        return WeatherEntity(cityName,date,temp,tempMin,tempMax,pressure,humidity,windSpeed,windDeg,lat,lon)
     }
 
 }

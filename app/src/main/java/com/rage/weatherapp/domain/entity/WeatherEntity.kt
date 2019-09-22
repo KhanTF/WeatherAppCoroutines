@@ -3,6 +3,7 @@ package com.rage.weatherapp.domain.entity
 import java.util.*
 
 data class WeatherEntity(
+        val cityName: String,
     val dt: Date,
     val temp: Double,
     val tempMin: Double,
