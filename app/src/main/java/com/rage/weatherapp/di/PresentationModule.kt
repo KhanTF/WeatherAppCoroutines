@@ -25,11 +25,20 @@ fun prepareNavigationModule() = module {
 
 fun prepareUiModule() = module {
     scope(named<CityListActivity>()) {
-        scoped { CityListPresenter(get(), get()) }
+        scoped {
+            CityListPresenter(
+                getCityListUseCase = get(),
+                router = get()
+            )
+        }
     }
     scope(named<CityWeatherActivity>()) {
         scoped { (cityModel: CityModel) ->
-            CityWeatherPresenter(cityModel, get())
+            CityWeatherPresenter(
+                cityModel = cityModel,
+                getCityWeatherUseCase = get(),
+                router = get()
+            )
         }
     }
 }

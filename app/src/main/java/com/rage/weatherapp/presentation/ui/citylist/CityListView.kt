@@ -8,4 +8,6 @@ import com.rage.weatherapp.presentation.model.CityModel
 interface CityListView : BaseView {
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun setCityDataSource(id: String,source: suspend (offset: Int, limit: Int) -> List<CityModel>)
+    @StateStrategyType(AddToEndSingleStrategy::class)
+    fun setProgressVisible(visible: Boolean, isAnimate: Boolean)
 }

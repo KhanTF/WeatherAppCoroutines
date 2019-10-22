@@ -82,6 +82,10 @@ class CityListActivity : BaseActivity(), CityListView {
         return true
     }
 
+    override fun setProgressVisible(visible: Boolean, isAnimate: Boolean) {
+        progress.setVisibility(visible, isAnimate)
+    }
+
     override fun setCityDataSource(id: String, source: suspend (offset: Int, limit: Int) -> List<CityModel>) {
         val dataSource = createCityListDataSource(source)
         val pagedListConfig = PagedList.Config.Builder()

@@ -43,6 +43,7 @@ class CityWeatherActivity : BaseActivity(), CityWeatherView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupToolbar()
         ViewCompat.setOnApplyWindowInsetsListener(activity_city_weather_root) { _, inset ->
             toolbar.getMarginLayoutParams().setSelectMargin(top = inset.systemWindowInsetTop)
             container.setSelectPadding(bottom = inset.systemWindowInsetBottom)
@@ -50,8 +51,31 @@ class CityWeatherActivity : BaseActivity(), CityWeatherView {
         }
     }
 
+    private fun setupToolbar(){
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        presenter.onBackPressed()
+        return true
+    }
+
+    override fun onBackPressed() {
+        presenter.onBackPressed()
+    }
+
+    override fun setTitle(title: String) {
+        supportActionBar?.title = title
+    }
+
     override fun showWeather(weatherModel: WeatherModel) {
-        name.text = weatherModel.cityName
+        temp.text = getString(R.string.temp,weatherModel.temp)
+        max_temp.text = getString(R.string.max_temp,weatherModel.tempMax)
+        min_temp.text = getString(R.string.min_temp,weatherModel.tempMin)
     }
 
     override fun setProgressVisibility(visibility: Boolean, isAnimate: Boolean) {

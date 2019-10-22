@@ -15,4 +15,16 @@ sealed class CircleAlgorithm {
 
         override fun getSweepInterpolate(interpolate: Float, index: Int, size: Int): Float = 1f
     }
+
+    object ReverseProgressiveCircleAlgorithm : CircleAlgorithm(){
+        override fun getAngleInterpolate(interpolate: Float, index: Int, size: Int): Float {
+            val sign = if(index.rem(2) == 0) 1 else -1
+            return  sign * interpolate * (size - index) * 2
+        }
+
+        override fun getSweepInterpolate(interpolate: Float, index: Int, size: Int): Float = 1f
+
+        override fun getOuterRadiusInterpolate(interpolate: Float): Float = 1f
+
+    }
 }

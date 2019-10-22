@@ -19,6 +19,7 @@ class GradientProgressBar @JvmOverloads constructor(
 
     companion object {
         private const val MAX_ANGLE = 360f
+        private const val DEFAULT_DURATION = 5000
     }
 
     private val paintProgress = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -36,7 +37,7 @@ class GradientProgressBar @JvmOverloads constructor(
             interpolate = it.animatedValue as Float
             postInvalidate()
         }
-        duration = 5000
+        duration = DEFAULT_DURATION.toLong()
         repeatMode = ObjectAnimator.RESTART
         interpolator = LinearInterpolator()
         repeatCount = ObjectAnimator.INFINITE
@@ -114,6 +115,8 @@ class GradientProgressBar @JvmOverloads constructor(
             radius = typed.getDimension(R.styleable.GradientProgressBar_radius, 5f)
             interval = typed.getDimension(R.styleable.GradientProgressBar_interval, 5f)
             sweep = typed.getInteger(R.styleable.GradientProgressBar_sweep, 90).toFloat()
+            countCircle = typed.getInteger(R.styleable.GradientProgressBar_circle_count, 5)
+            animator.duration = typed.getInteger(R.styleable.GradientProgressBar_duration, DEFAULT_DURATION).toLong()
             typed.recycle()
         }
     }
@@ -148,6 +151,16 @@ class GradientProgressBar @JvmOverloads constructor(
     }
 
     fun setVisibility(visibility: Boolean, isAnimate: Boolean) {
+        if (getVisibility() == VISIBLE && visibility) {
+            return
+        }
+        if (getVisibility() == GONE && !visibility) {
+            return
+        }
+        if (getVisibility() == INVISIBLE && !visibility) {
+            setVisibility(GONE)
+            return
+        }
         if (isAnimate) {
             if (visibility) {
                 goneAnimator.cancel()

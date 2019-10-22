@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="search">Search</string>
+
+    <string name="max_temp">Макимальная температура : %.2f C</string>
+    <string name="min_temp">Минимальная температура : %.2f C</string>
+    <string name="temp">Температура : %.2f C</string>
 </resources>
