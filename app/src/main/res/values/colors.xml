@@ -6,4 +6,11 @@
     <color name="textColorPrimary">@color/white</color>
     <color name="colorControlNormal">@color/white</color>
     <color name="white">#ffffff</color>
+
+    <array name="gradient">
+        <item>@color/colorPrimary</item>
+        <item>@color/colorAccent</item>
+        <item>@color/colorPrimaryDark</item>
+    </array>
+
 </resources>

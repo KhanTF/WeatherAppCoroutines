@@ -5,6 +5,7 @@ import com.rage.weatherapp.domain.usecase.GetCityListUseCase
 import com.rage.weatherapp.presentation.base.BasePresenter
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.presentation.model.CityModelMapper
+import com.rage.weatherapp.presentation.ui.cityweather.CityWeatherScreen
 import com.rage.weatherapp.util.createDebounce
 import ru.terrakok.cicerone.Router
 
@@ -23,7 +24,7 @@ class CityListPresenter constructor(
     }
 
     fun onCitySelected(cityModel: CityModel) {
-        //router.navigateTo(SharedSupportAppScreen(CityWeatherScreen(cityModel), param))
+        router.navigateTo(CityWeatherScreen(cityModel))
     }
 
     fun onSearchCity(text: String) {

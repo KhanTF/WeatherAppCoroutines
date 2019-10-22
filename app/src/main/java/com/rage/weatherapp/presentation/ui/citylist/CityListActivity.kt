@@ -59,7 +59,6 @@ class CityListActivity : BaseActivity(), CityListView {
             city_list.setSelectPadding(bottom = inset.systemWindowInsetBottom)
             inset.consumeSystemWindowInsets()
         }
-
         val layoutManager = LinearLayoutManager(this)
         city_list.adapter = adapter
         adapter.listener = presenter::onCitySelected

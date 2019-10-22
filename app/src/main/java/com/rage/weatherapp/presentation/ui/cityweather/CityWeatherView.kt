@@ -9,5 +9,5 @@ interface CityWeatherView : BaseView{
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun showWeather(weatherModel: WeatherModel)
     @StateStrategyType(AddToEndSingleStrategy::class)
-    fun setProgressVisibility(visibility: Boolean)
+    fun setProgressVisibility(visibility: Boolean, isAnimate: Boolean)
 }
