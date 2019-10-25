@@ -9,20 +9,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rage.weatherapp.R
 import com.rage.weatherapp.presentation.model.CityModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_city.view.*
 
 class CityListAdapter : PagedListAdapter<CityModel, CityListAdapter.CityViewHolder>(CityListDiffUtil()) {
 
-    var listener : ((CityModel)->Unit)?=null
+    var listener: ((CityModel, View) -> Unit)? = null
 
     private var id: String? = null
 
-    fun submitList(id: String,pagedList: PagedList<CityModel>?) {
-        if(this.id != id){
+    fun submitList(id: String, pagedList: PagedList<CityModel>?) {
+        if (this.id != id) {
             submitList(pagedList)
             this.id = id
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityViewHolder {
         return CityViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_city, parent, false))
     }
@@ -44,10 +46,14 @@ class CityListAdapter : PagedListAdapter<CityModel, CityListAdapter.CityViewHold
     inner class CityViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(model: CityModel?) = itemView.apply {
             if (model != null) {
-                title.text = model.id.toString()
+                Picasso
+                    .get()
+                    .load(model.image)
+                    .into(image)
+                title.text = context.getString(R.string.id, model.id)
                 name.text = model.name
                 setOnClickListener {
-                    listener?.invoke(model)
+                    listener?.invoke(model, image)
                 }
             }
         }

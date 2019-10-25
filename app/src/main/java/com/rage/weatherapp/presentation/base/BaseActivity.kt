@@ -2,8 +2,8 @@ package com.rage.weatherapp.presentation.base
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.arellomobile.mvp.MvpAppCompatActivity
+import com.rage.weatherapp.presentation.common.navigator.TransitionNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -20,7 +20,7 @@ abstract class BaseActivity : MvpAppCompatActivity(), BaseView, CoroutineScope b
 
     private val navigatorHolder: NavigatorHolder by inject()
 
-    private val navigator: Navigator by inject {
+    protected val navigator: TransitionNavigator by inject {
         parametersOf(this, getContainerId())
     }
 

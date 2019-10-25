@@ -34,7 +34,7 @@ class CityWeatherPresenter constructor(
                 val model = withContext(Dispatchers.IO) {
                     getCityWeatherUseCase.getWeatherByCityId(cityModel.id).let(WeatherModelMapper::map)
                 }
-                viewState.showWeather(model)
+                viewState.showWeather(model,cityModel)
             } finally {
                 viewState.setProgressVisibility(visibility = false, isAnimate = true)
             }

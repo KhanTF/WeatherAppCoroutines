@@ -5,15 +5,17 @@ import com.rage.weatherapp.domain.usecase.GetCityListUseCase
 import com.rage.weatherapp.presentation.base.BasePresenter
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.presentation.model.CityModelMapper
+import com.rage.weatherapp.presentation.navigator.ScreenFactory
 import com.rage.weatherapp.presentation.ui.cityweather.CityWeatherScreen
 import com.rage.weatherapp.util.createDebounce
 import ru.terrakok.cicerone.Router
 
 @InjectViewState
 class CityListPresenter constructor(
-        private val getCityListUseCase: GetCityListUseCase,
-        private val router: Router) :
-        BasePresenter<CityListView>() {
+    private val getCityListUseCase: GetCityListUseCase,
+    private val router: Router,
+    private val screenFactory: ScreenFactory
+) : BasePresenter<CityListView>() {
 
     private val searchDebounce = createDebounce()
     private var searchText: String = ""
@@ -24,7 +26,7 @@ class CityListPresenter constructor(
     }
 
     fun onCitySelected(cityModel: CityModel) {
-        router.navigateTo(CityWeatherScreen(cityModel))
+        router.navigateTo(screenFactory.getCityWeatherScreen(cityModel))
     }
 
     fun onSearchCity(text: String) {

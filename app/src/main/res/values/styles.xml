@@ -1,7 +1,17 @@
 <resources>
 
+    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowEnterTransition">@android:transition/fade</item>
+        <item name="android:windowExitTransition">@android:transition/fade</item>
+        <item name="android:windowReturnTransition">@android:transition/fade</item>
+        <item name="android:windowReenterTransition">@android:transition/fade</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/move_image_transform</item>
+        <item name="android:windowSharedElementExitTransition">@transition/move_image_transform</item>
+    </style>
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppTheme" parent="BaseTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -15,7 +25,44 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="Text">
 
+    </style>
 
+    <style name="Text.Body">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="Text.Body.1">
+        <item name="android:textSize">@dimen/text_body_1</item>
+    </style>
+
+    <style name="Text.Body.2">
+        <item name="android:textSize">@dimen/text_body_2</item>
+    </style>
+
+    <style name="Text.Body.3">
+        <item name="android:textSize">@dimen/text_body_3</item>
+    </style>
+
+    <style name="Text.Body.4">
+        <item name="android:textSize">@dimen/text_body_4</item>
+    </style>
+
+    <style name="Text.Body.1.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Body.2.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Body.3.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Body.4.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

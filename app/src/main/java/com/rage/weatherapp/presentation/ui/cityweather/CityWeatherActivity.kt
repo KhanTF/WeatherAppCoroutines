@@ -14,6 +14,7 @@ import com.rage.weatherapp.presentation.common.setSelectMargin
 import com.rage.weatherapp.presentation.common.setSelectPadding
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.presentation.model.WeatherModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_city_weather.*
 import org.koin.core.parameter.parametersOf
 
@@ -72,7 +73,12 @@ class CityWeatherActivity : BaseActivity(), CityWeatherView {
         supportActionBar?.title = title
     }
 
-    override fun showWeather(weatherModel: WeatherModel) {
+    override fun showWeather(weatherModel: WeatherModel, cityModel: CityModel) {
+        ViewCompat.setTransitionName(image,cityModel.id.toString())
+        Picasso
+            .get()
+            .load(cityModel.image)
+            .into(image)
         temp.text = getString(R.string.temp,weatherModel.temp)
         max_temp.text = getString(R.string.max_temp,weatherModel.tempMax)
         min_temp.text = getString(R.string.min_temp,weatherModel.tempMin)

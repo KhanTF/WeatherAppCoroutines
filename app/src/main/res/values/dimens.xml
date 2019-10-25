@@ -3,4 +3,10 @@
     <dimen name="list_item_space">8dp</dimen>
     <dimen name="list_item_vertical">8dp</dimen>
     <dimen name="list_item_horizontal">8dp</dimen>
+
+    <dimen name="text_body_1">24sp</dimen>
+    <dimen name="text_body_2">20sp</dimen>
+    <dimen name="text_body_3">16sp</dimen>
+    <dimen name="text_body_4">12sp</dimen>
+
 </resources>

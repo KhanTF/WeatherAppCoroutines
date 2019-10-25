@@ -21,6 +21,8 @@ import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.util.executor.CoroutineExecutor
 import kotlinx.android.synthetic.main.activity_city_list.*
 import kotlinx.coroutines.Dispatchers
+import org.koin.core.parameter.parametersOf
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
 
 class CityListActivity : BaseActivity(), CityListView {
 
@@ -61,7 +63,10 @@ class CityListActivity : BaseActivity(), CityListView {
         }
         val layoutManager = LinearLayoutManager(this)
         city_list.adapter = adapter
-        adapter.listener = presenter::onCitySelected
+        adapter.listener = { model, sharedView ->
+            navigator.setSharedElement(listOf(sharedView to model.id.toString()))
+            presenter.onCitySelected(model)
+        }
         city_list.layoutManager = layoutManager
         city_list.addItemDecoration(
             MarginItemDecoration(
