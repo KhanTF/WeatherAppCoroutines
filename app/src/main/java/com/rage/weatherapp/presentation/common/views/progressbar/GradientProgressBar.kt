@@ -61,7 +61,7 @@ class GradientProgressBar @JvmOverloads constructor(
         addUpdateListener {
             val value = it.animatedValue as Float
             extraFreeRadiusK = 1f - value
-            extraAlpha = value
+            alpha = value
             extraIntervalK = 2f - value
             postInvalidate()
         }
@@ -84,7 +84,7 @@ class GradientProgressBar @JvmOverloads constructor(
         addUpdateListener {
             val value = it.animatedValue as Float
             extraFreeRadiusK = 1f - value
-            extraAlpha = value
+            alpha = value
             extraIntervalK = 2f - value
             postInvalidate()
         }
@@ -92,12 +92,11 @@ class GradientProgressBar @JvmOverloads constructor(
 
     private fun setupAnimatedK() {
         extraFreeRadiusK = 0f
-        extraAlpha = 1f
+        alpha = 1f
         extraIntervalK = 1f
     }
 
     private var extraFreeRadiusK = 0f
-    private var extraAlpha = 1f
     private var extraIntervalK = 1f
 
     var algorithm: CircleAlgorithm = CircleAlgorithm.ProgressiveCircleAlgorithm
@@ -106,7 +105,12 @@ class GradientProgressBar @JvmOverloads constructor(
         paintProgress.style = Paint.Style.STROKE
         paintProgress.strokeWidth = 10f
         if (attributeSet != null) {
-            val typed = context.obtainStyledAttributes(attributeSet, R.styleable.GradientProgressBar, defStyleAttr, 0)
+            val typed = context.obtainStyledAttributes(
+                attributeSet,
+                R.styleable.GradientProgressBar,
+                defStyleAttr,
+                0
+            )
             val gradientReference = typed.getResourceId(R.styleable.GradientProgressBar_gradient, 0)
             if (gradientReference != 0) {
                 gradient = context.resources.getIntArray(gradientReference)
@@ -116,7 +120,9 @@ class GradientProgressBar @JvmOverloads constructor(
             interval = typed.getDimension(R.styleable.GradientProgressBar_interval, 5f)
             sweep = typed.getInteger(R.styleable.GradientProgressBar_sweep, 90).toFloat()
             countCircle = typed.getInteger(R.styleable.GradientProgressBar_circle_count, 5)
-            animator.duration = typed.getInteger(R.styleable.GradientProgressBar_duration, DEFAULT_DURATION).toLong()
+            animator.duration =
+                typed.getInteger(R.styleable.GradientProgressBar_duration, DEFAULT_DURATION)
+                    .toLong()
             typed.recycle()
         }
     }
@@ -133,12 +139,20 @@ class GradientProgressBar @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         paintProgress.strokeWidth = strokeWidth
-        paintProgress.alpha = (255f * extraAlpha).toInt()
-        val outerRadius = (getOuterMeasuredRadius() - strokeWidth / 2f + freeRadiusSpace * extraFreeRadiusK) * algorithm.getOuterRadiusInterpolate(interpolate)
+        val outerRadius =
+            (getOuterMeasuredRadius() - strokeWidth / 2f + freeRadiusSpace * extraFreeRadiusK) * algorithm.getOuterRadiusInterpolate(
+                interpolate
+            )
         val centerX = width / 2f
         val centerY = height / 2f
-        progressRect.set(centerX - outerRadius, centerY - outerRadius, centerX + outerRadius, centerY + outerRadius)
+        progressRect.set(
+            centerX - outerRadius,
+            centerY - outerRadius,
+            centerX + outerRadius,
+            centerY + outerRadius
+        )
         for (i in 0 until countCircle) {
+            paintProgress.color = getColor(i)
             canvas.drawArc(
                 progressRect,
                 algorithm.getAngleInterpolate(interpolate, i, countCircle) * MAX_ANGLE,
@@ -201,9 +215,8 @@ class GradientProgressBar @JvmOverloads constructor(
         setMeasuredDimension(width, height)
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        paintProgress.shader = LinearGradient(0f, 0f, w.toFloat(), h.toFloat(), gradient, null, Shader.TileMode.CLAMP)
+    private fun getColor(indexLine: Int): Int {
+        return gradient[indexLine.rem(gradient.size)]
     }
 
     override fun onAttachedToWindow() {

@@ -2,6 +2,9 @@ package com.rage.weatherapp.presentation.ui.cityweather
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.core.view.ViewCompat
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -15,6 +18,7 @@ import com.rage.weatherapp.presentation.common.setSelectPadding
 import com.rage.weatherapp.presentation.model.CityModel
 import com.rage.weatherapp.presentation.model.WeatherModel
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Transformation
 import kotlinx.android.synthetic.main.activity_city_weather.*
 import org.koin.core.parameter.parametersOf
 
@@ -29,7 +33,8 @@ class CityWeatherActivity : BaseActivity(), CityWeatherView {
         }
 
         private fun getCityModel(intent: Intent?): CityModel {
-            return intent?.getParcelableExtra(KEY_CITY) ?: throw IllegalArgumentException("CityModel is required")
+            return intent?.getParcelableExtra(KEY_CITY)
+                ?: throw IllegalArgumentException("CityModel is required")
         }
 
     }
@@ -52,7 +57,7 @@ class CityWeatherActivity : BaseActivity(), CityWeatherView {
         }
     }
 
-    private fun setupToolbar(){
+    private fun setupToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -74,14 +79,14 @@ class CityWeatherActivity : BaseActivity(), CityWeatherView {
     }
 
     override fun showWeather(weatherModel: WeatherModel, cityModel: CityModel) {
-        ViewCompat.setTransitionName(image,cityModel.id.toString())
+        ViewCompat.setTransitionName(image, cityModel.id.toString())
         Picasso
             .get()
             .load(cityModel.image)
             .into(image)
-        temp.text = getString(R.string.temp,weatherModel.temp)
-        max_temp.text = getString(R.string.max_temp,weatherModel.tempMax)
-        min_temp.text = getString(R.string.min_temp,weatherModel.tempMin)
+        temp.text = getString(R.string.temp, weatherModel.temp)
+        max_temp.text = getString(R.string.max_temp, weatherModel.tempMax)
+        min_temp.text = getString(R.string.min_temp, weatherModel.tempMin)
     }
 
     override fun setProgressVisibility(visibility: Boolean, isAnimate: Boolean) {
